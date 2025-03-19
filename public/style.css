@@ -1,0 +1,96 @@
+/* Общие стили */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+body {
+    font-family: "Roboto", sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+  }
+  #send{
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+  }
+  #app {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    max-width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #444;
+    margin-bottom: 20px;
+    visibility: hidden;
+  }
+  
+  /* Стили для блока авторизации */
+  #auth {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  #auth input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  #auth button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #auth button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Стили для блока чата */
+  #chat {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  #messages {
+    height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  #message-input {
+    display: flex;
+    gap: 10px;
+  }
+  
+  #message-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
