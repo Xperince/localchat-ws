@@ -1,3 +1,2 @@
 Для запуска 
-npm install ws
-node server.js
+npm install express ws sqlite3 || node server.js
