@@ -1,152 +1,81 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebSocket Чат</title>
-  <link rel="stylesheet" href="style.css">
-  
-</head>
-<body>
-  <div id="app">
-    <h1>WebSocket Чат</h1>
-    <div id="auth">
-      <input type="text" id="username" placeholder="Имя пользователя">
-      <input type="password" id="password" placeholder="Пароль">
-      <button id="register">Зарегистрироваться</button>
-      <button id="login">Войти</button>
-    </div>
-    <div id="chat">
-      <div id="messages"></div>
-      <div id="message-input">
-        <input type="text" id="message" placeholder="Введите сообщение">
-        <button id="send">Отправить</button>
-      </div>
-    </div>
-  </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>WebSocket Чат</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<div id="app">
+			<!-- Форма авторизации -->
+			<div id="auth">
+				<div class="auth-card">
+					<div class="auth-header">
+						<svg class="auth-icon" viewBox="0 0 24 24" fill="#4361ee">
+							<path
+								d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+							/>
+						</svg>
+						<h1>Вход в чат</h1>
+					</div>
 
-  <script>
-    const authDiv = document.getElementById('auth');
-    const chatDiv = document.getElementById('chat');
-    const messagesDiv = document.getElementById('messages');
-    const messageInput = document.getElementById('message');
-    const sendButton = document.getElementById('send');
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-    const registerButton = document.getElementById('register');
-    const loginButton = document.getElementById('login');
+					<div class="auth-form">
+						<div class="input-group">
+							<label for="username">Имя пользователя</label>
+							<input type="text" id="username" placeholder="Ваш логин" />
+						</div>
 
-    let username = '';
-    let ws;
+						<div class="input-group">
+							<label for="password">Пароль</label>
+							<input type="password" id="password" placeholder="Ваш пароль" />
+						</div>
 
-    // Регистрация
-    registerButton.addEventListener('click', async () => {
-      const response = await fetch('/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: usernameInput.value,
-          password: passwordInput.value,
-        }),
-      });
-      const result = await response.json();
-      alert(result.message || result.error);
-    });
+						<div class="auth-buttons">
+							<button id="login" class="auth-btn primary">Войти</button>
+							<button id="register" class="auth-btn secondary">
+								Зарегистрироваться
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
-    // Авторизация
-    loginButton.addEventListener('click', async () => {
-      const response = await fetch('/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: usernameInput.value,
-          password: passwordInput.value,
-        }),
-      });
-      const result = await response.json();
-      if (result.message) {
-        username = usernameInput.value;
-        authDiv.style.display = 'none';
-        chatDiv.style.display = 'flex';
-        connectWebSocket();
-      } else {
-        alert(result.error);
-      }
-    });
+			<!-- Чат (изначально скрыт) -->
+			<div id="chat" style="display: none">
+				<div id="chat-header">
+					<h2>Чат</h2>
+					<button id="logout" class="logout-btn" title="Выйти">
+						<svg
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+						>
+							<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+							<polyline points="16 17 21 12 16 7"></polyline>
+							<line x1="21" y1="12" x2="9" y2="12"></line>
+						</svg>
+					</button>
+				</div>
 
-    // Подключение к WebSocket
-    function connectWebSocket() {
-      ws = new WebSocket('ws://localhost:3000');
+				<div id="messages-container">
+					<div id="messages"></div>
+				</div>
 
-      ws.onopen = () => {
-        console.log('WebSocket подключен');
-        // Отправляем уведомление о подключении
-        ws.send(JSON.stringify({ type: 'join', username }));
-      };
+				<div id="message-input">
+					<input
+						type="text"
+						id="message"
+						placeholder="Напишите сообщение..."
+						autocomplete="off"
+					/>
+					<button id="send">Отправить</button>
+				</div>
+			</div>
+		</div>
 
-      ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-
-        if (data.type === 'history') {
-          // Загрузка истории сообщений
-          data.messages.forEach((msg) => addMessage(msg.username, msg.message));
-        } else if (data.type === 'message') {
-          // Отображение нового сообщения
-          addMessage(data.username, data.text);
-        } else if (data.type === 'notification') {
-          // Отображение уведомления
-          addNotification(data.text);
-        }
-      };
-
-      ws.onclose = () => {
-        console.log('WebSocket отключен');
-      };
-    }
-
-    // Отправка сообщения
-    function sendMessage() {
-      const message = messageInput.value;
-      if (message) {
-        ws.send(JSON.stringify({ type: 'message', username, text: message }));
-        messageInput.value = '';
-      }
-    }
-
-    // Отправка сообщения по нажатию Enter
-    messageInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        sendMessage();
-      }
-    });
-
-    // Отправка сообщения по нажатию кнопки
-    sendButton.addEventListener('click', sendMessage);
-
-    // Добавление сообщения в чат
-    function addMessage(sender, text) {
-      const messageElement = document.createElement('div');
-      messageElement.classList.add('message');
-      if (sender === username) {
-        messageElement.classList.add('user');
-        messageElement.innerHTML = `<strong>Вы:</strong> ${text}`;
-      } else {
-        messageElement.classList.add('other');
-        messageElement.innerHTML = `<strong>${sender}:</strong> ${text}`;
-      }
-      messagesDiv.appendChild(messageElement);
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-
-    // Добавление уведомления в чат
-    function addNotification(text) {
-      const notificationElement = document.createElement('div');
-      notificationElement.classList.add('message', 'notification');
-      notificationElement.textContent = text;
-      messagesDiv.appendChild(notificationElement);
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-  </script>
-
-</body>
+		<script src="client.js"></script>
+	</body>
 </html>

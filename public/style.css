@@ -1,96 +1,259 @@
-/* Общие стили */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-body {
-    font-family: "Roboto", sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: #333;
-  }
-  #send{
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+:root {
+	--primary: #4361ee;
+	--primary-dark: #3a56d4;
+	--danger: #f72585;
+	--white: #ffffff;
+	--light: #f8f9fa;
+	--gray: #e9ecef;
+	--dark: #212529;
+	--border-radius: 8px;
+}
 
-  }
-  #app {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    max-width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  
-  h1 {
-    text-align: center;
-    color: #444;
-    margin-bottom: 20px;
-    visibility: hidden;
-  }
-  
-  /* Стили для блока авторизации */
-  #auth {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  #auth input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  #auth button {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  #auth button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Стили для блока чата */
-  #chat {
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  #messages {
-    height: 300px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    background-color: #f9f9f9;
-  }
-  
-  #message-input {
-    display: flex;
-    gap: 10px;
-  }
-  
-  #message-input input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-  }
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: 'Segoe UI', system-ui, sans-serif;
+	background-color: #f1f3f5;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	padding: 20px;
+}
+
+#app {
+	width: 100%;
+	max-width: 500px;
+}
+
+#auth {
+	width: 100%;
+}
+
+.auth-card {
+	background: var(--white);
+	border-radius: var(--border-radius);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+}
+
+.auth-header {
+	background-color: var(--primary);
+	color: var(--white);
+	padding: 25px;
+	text-align: center;
+}
+
+.auth-icon {
+	width: 48px;
+	height: 48px;
+	margin-bottom: 15px;
+}
+
+.auth-header h1 {
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+
+.auth-form {
+	padding: 25px;
+}
+
+.input-group {
+	margin-bottom: 20px;
+}
+
+.input-group label {
+	display: block;
+	margin-bottom: 8px;
+	font-size: 0.9rem;
+	color: var(--dark);
+	font-weight: 500;
+}
+
+.input-group input {
+	width: 100%;
+	padding: 12px 15px;
+	border: 1px solid var(--gray);
+	border-radius: var(--border-radius);
+	font-size: 1rem;
+	transition: all 0.2s;
+}
+
+.input-group input:focus {
+	outline: none;
+	border-color: var(--primary);
+	box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+}
+
+.auth-buttons {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-top: 25px;
+}
+
+.auth-btn {
+	padding: 12px;
+	border: none;
+	border-radius: var(--border-radius);
+	font-size: 1rem;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.auth-btn.primary {
+	background-color: var(--primary);
+	color: var(--white);
+}
+
+.auth-btn.primary:hover {
+	background-color: var(--primary-dark);
+}
+
+.auth-btn.secondary {
+	background-color: var(--white);
+	color: var(--primary);
+	border: 1px solid var(--primary);
+}
+
+.auth-btn.secondary:hover {
+	background-color: #f0f4ff;
+}
+
+#chat {
+	display: flex;
+	flex-direction: column;
+	height: 70vh;
+	background: var(--white);
+	border-radius: var(--border-radius);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+}
+
+#chat-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px 20px;
+	background-color: var(--primary);
+	color: var(--white);
+}
+
+#chat-header h2 {
+	font-size: 1.2rem;
+	font-weight: 600;
+}
+
+#messages-container {
+	flex: 1;
+	padding: 15px;
+	overflow-y: auto;
+	background-color: var(--light);
+}
+
+#messages {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.message {
+	padding: 10px 15px;
+	border-radius: var(--border-radius);
+	max-width: 80%;
+	font-size: 0.95rem;
+	line-height: 1.4;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.message.user {
+	background-color: var(--primary);
+	color: var(--white);
+	margin-left: auto;
+	border-bottom-right-radius: 2px;
+}
+
+.message.other {
+	background-color: var(--white);
+	margin-right: auto;
+	border-bottom-left-radius: 2px;
+	border: 1px solid var(--gray);
+}
+
+.message strong {
+	font-weight: 600;
+	display: block;
+	margin-bottom: 3px;
+	font-size: 0.8rem;
+}
+
+.message.user strong {
+	color: rgba(255, 255, 255, 0.9);
+}
+
+.message.notification {
+	background-color: #fff5f5;
+	color: var(--danger);
+	text-align: center;
+	font-size: 0.8rem;
+	padding: 8px;
+	margin: 5px auto;
+	max-width: 70%;
+	border: none;
+}
+
+#message-input {
+	display: flex;
+	padding: 15px;
+	background-color: var(--white);
+	border-top: 1px solid var(--gray);
+	gap: 10px;
+}
+
+#message {
+	flex: 1;
+	padding: 10px 15px;
+	border: 1px solid var(--gray);
+	border-radius: 20px;
+	font-size: 1rem;
+}
+
+#send {
+	background-color: var(--primary);
+	color: var(--white);
+	border: none;
+	border-radius: var(--border-radius);
+	padding: 0 20px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+#send:hover {
+	background-color: var(--primary-dark);
+}
+
+.logout-btn {
+	background: none;
+	border: none;
+	color: var(--white);
+	padding: 5px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	width: 36px;
+	height: 36px;
+	transition: all 0.2s;
+}
+
+.logout-btn:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+}
